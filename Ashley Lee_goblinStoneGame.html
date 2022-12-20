@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>gobliN stoNe gaMe</title>
+</head>
+<script>
+    function initialize() {
+        firstPileAmt = document.getElementById("firstPile");
+        secondPileAmt = document.getElementById("secondPile");
+        thirdPileAmt = document.getElementById("thirdPile");
+        pile1 = 3;
+        pile2 = 3;
+        pile3 = 3; 
+
+        warningNote = document.getElementById("warning");
+        note = "";
+        emptyPile = "You can't take from an empty pile!";
+        notEnough = "There aren't enough stones to take!";
+
+        unkSays = document.getElementById("unkThink");
+        unk = "";
+        gobLastStone = "</br> tHE LaST sTonE is OurS. HavE yoU pRepAreD yoUR LAsT worDS??";
+
+        playerTurn = false;
+        win = false;
+
+        start();
+        display();
+    }
+    function display() {
+        firstPileAmt.innerHTML = pile1;
+        secondPileAmt.innerHTML = pile2;
+        thirdPileAmt.innerHTML = pile3;
+        warningNote.innerHTML = note;
+        unkSays.innerHTML = unk;
+    }
+    function start() {
+        unk += "MeaSlY HumAn DaReS cHaLLeNge unK and glooB bRiLLiaNcE??";
+        gobTurn();
+    }
+    function reset() {
+        pile1 = 3;
+        pile2 = 3;
+        pile3 = 3;
+        note = "";
+        unk = "";
+        playerTurn = false;
+        start();
+        display();
+    }
+    function yesNoWin() {
+        return (pile1==0 && pile2==0 && pile3==0);
+    }
+    function largest() {
+        if((pile1 >= pile2) && (pile1 >= pile3)){
+            return 1;
+        }
+        if((pile2 >= pile1) && (pile2 >= pile3)){
+            return 2;
+        }
+        if((pile3 >= pile1) && (pile3 >= pile2)){
+            return 3;
+        }
+    }
+    function smallest() {
+        if((pile1 < pile2) && (pile1 < pile3)){
+            return 1;
+        }
+        if((pile2 < pile1) && (pile2 < pile3)){
+            return 2;
+        }
+        if((pile3 < pile1) && (pile3 < pile2)){
+            return 3;
+        }
+    }
+    function yourTurn(){
+        var rand = (Math.floor(Math.random() * 4)) 
+        if(rand == 1){
+            return "</br> It'Ll BE hARd To BeAt THAT mOVe, YouR tuRN"
+        }
+        if(rand == 2){
+            return "</br> CmON gO Go GO iTs yOUR tURN"
+        }
+        if(rand == 3){
+            return "</br> I beT yoUR stuPId TuRn woNt BE bEttER Than MinE"
+        }
+        else{
+            return "</br> hmPH youR tuRN"
+        }
+    }
+    function gobTurn() {
+        if(!win){
+            if(!playerTurn && !yesNoWin()){
+                if(pile1 == 1) {
+                    pile1 --;
+                    unk += "</br> unK toOK ThE STonE in tHe FirST PiLE"
+                    unk += gobLastStone;
+                }
+                else if(pile2 == 1) {
+                    pile2 --;
+                    unk += "</br> unK toOK ThE STonE in tHe sECOnD PiLE"
+                    unk += gobLastStone;
+                }
+                else if(pile3 == 1) {
+                    pile3 --;
+                    unk += "</br> unK toOK ThE STonE in tHe tHIRd PiLE"
+                    unk += gobLastStone;
+                }
+                else{
+                    if((largest() == 1) && pile1 != 0){
+                        pile1 --;
+                        unk += "</br> unK has tAken OnE sTone From tHe fIrST PiLE"
+                    }
+                    else if((largest() == 2) && pile2 != 0){
+                        pile2 --;
+                        unk += "</br> unK has tAken OnE sTone From tHe sECoND PiLE"
+                    }
+                    else if((largest() == 3) && pile3 != 0){
+                        pile3 --;
+                        unk += "</br> unK has tAken OnE sTone From tHe tHIRd PiLE"
+                    }
+                }
+            }
+            if(yesNoWin()){
+                unk += "</br> nO NoOoO NOOO wE diDN't LOse, You cHEATED"
+                win = true;
+            }
+            else{
+                unk += yourTurn();
+            }
+            playerTurn=true;
+            display();
+        }
+    }
+    function subtract(pileNum, numStones){
+        if(!win){
+            if(pileNum == 1){
+                    if(numStones == 1){
+                    if(pile1 <= 0) {
+                        note = emptyPile;
+                    }
+                    else{
+                        pile1 = pile1 - 1;
+                    }
+                }
+                if(numStones == 2){
+                    if(pile1 == 1) {
+                        note = notEnough;
+                    }
+                    else if(pile1 <= 0) {
+                        note = emptyPile;
+                    }
+                    else {
+                        pile1 = pile1 - 2;
+                    }
+                }
+                if(numStones == 3){
+                    if(pile1 <= 2 && pile1 >= 1) {
+                        note = notEnough;
+                    }
+                    else if(pile1 == 0) {
+                        note = emptyPile;
+                    }
+                    else {
+                        pile1 = pile1 - 3;
+                    }
+                }
+            }
+            if(pileNum == 2){
+                if(numStones == 1){
+                    if(pile2 <= 0) {
+                        note = emptyPile;
+                    }
+                    else{
+                        pile2 = pile2 - 1;
+                    }
+                }
+                if(numStones == 2){
+                    if(pile2 == 1) {
+                        note = notEnough;
+                    }
+                    else if(pile2 <= 0) {
+                        note = emptyPile;
+                    }
+                    else {
+                        pile2 = pile2 - 2;
+                    }
+                }
+                if(numStones == 3){
+                    if(pile2 <= 2 && pile2 >= 1) {
+                        note = notEnough;
+                    }
+                    else if(pile2 == 0) {
+                        note = emptyPile;
+                    }
+                    else {
+                        pile2 = pile2 - 3;
+                    }
+                }
+            }
+            if(pileNum == 3){
+                if(numStones == 1){
+                    if(pile3 <= 0) {
+                        note = emptyPile;
+                    }
+                    else{
+                        pile3 = pile3 - 1;
+                    }
+                }
+                if(numStones == 2){
+                    if(pile3 == 1) {
+                        note = notEnough;
+                    }
+                    else if(pile3 <= 0) {
+                        note = emptyPile;
+                    }
+                    else {
+                        pile3 = pile3 - 2;
+                    }
+                }
+                if(numStones == 3){
+                    if(pile3 <= 2 && pile3 >= 1) {
+                        note = notEnough;
+                    }
+                    else if(pile3 == 0) {
+                        note = emptyPile;
+                    }
+                    else {
+                        pile3 = pile3 - 3;
+                    }
+                }
+            }
+            if(yesNoWin()){
+                unk += "</br> aHAhAAHHAhA We WIN GlORY To The GoBLINS"
+                playerTurn = true;
+                win = true;
+            }
+            if(!yesNoWin() && (note == "")){
+                playerTurn=false;
+            }
+            display();
+            gobTurn();
+            note = "";
+        }
+    }
+</script>
+<body onload="initialize();">
+    <h1>gobliN stoNe gaMe</h1>
+    <p>The goblinS have invented a game that, in their language, is impossible for us to pronounce, but, in English, is called the stoNe gaMe. The two best gobliN players of all of the goblinS who play the stoNe gaMe are unK and glooB. The game is played by setting up 3 piles of stones. Each pile has 3 stones in it. On your turn, you can take any number of stones from any pile you like. If you take the last stone from the last pile, you lose the game.</p>
+    <hr>
+    <h4 id="unkThink"></h4>
+    <hr>
+    <button onclick="reset()">Reset</button>
+    <h3 id="warning"></h3>
+
+    <h2>Pile 1: </h2> <h2 id="firstPile">0 </h2>
+    <hr>
+    <button onclick="subtract(1, 1);">Take One</button>
+    <button onclick="subtract(1, 2);">Take Two</button>
+    <button onclick="subtract(1, 3);">Take All</button>
+    <br> <hr> <br>
+    <h2>Pile 2: </h2> <h2 id="secondPile">0 </h2>
+    <hr>
+    <button onclick="subtract(2, 1);">Take One</button>
+    <button onclick="subtract(2, 2);">Take Two</button>
+    <button onclick="subtract(2, 3);">Take All</button>
+    <br> <hr> <br>
+    <h2>Pile 3: </h2> <h2 id="thirdPile">0 </h2>
+    <hr>
+    <button onclick="subtract(3, 1);">Take One</button>
+    <button onclick="subtract(3, 2);">Take Two</button>
+    <button onclick="subtract(3, 3);">Take All</button>
+    <hr>
+</body>
+</html>
